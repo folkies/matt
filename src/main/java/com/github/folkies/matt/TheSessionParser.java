@@ -35,6 +35,8 @@ public class TheSessionParser {
 							.add("tune", tune.getString("tune"))
 							.add("setting", tune.getString("setting"))
 							.add("name", tune.getString("name"))
+							.add("rhythm", tune.getString("type"))
+							.add("key", transformKey(tune.getString("mode")))
 							.add("normalized", body));
 			}
 		}
@@ -81,6 +83,18 @@ public class TheSessionParser {
 		sb.append("\n\n");
 		sb.append(notation);
 		return sb.toString();
+	}
+
+	private String transformKey(String key) {
+		String fundamental = key.substring(0, 1);
+		String mode = key.substring(1);
+		if (mode.equals("major")) {
+			return fundamental;
+		}
+		if (mode.equals("minor")) {
+			return fundamental + "min";
+		}
+		return key.substring(0, 4);
 	}
 
 
