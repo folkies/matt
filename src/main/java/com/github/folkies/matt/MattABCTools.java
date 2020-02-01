@@ -16,17 +16,6 @@ package com.github.folkies.matt;
 public class MattABCTools {
 
 	static String fixNotationForTunepal(String notation) {
-		notation = notation.replace("á", "\\\'a");
-		notation = notation.replace("é", "\\\'e");
-		notation = notation.replace("í", "\\\'i");
-		notation = notation.replace("ó", "\\\'o");
-		notation = notation.replace("ú", "\\\'u");
-		notation = notation.replace("Á", "\\\'A");
-		notation = notation.replace("É", "\\\'E");
-		notation = notation.replace("Í", "\\\'I");
-		notation = notation.replace("Ó", "\\\'O");
-		notation = notation.replace("Ú", "\\\'U");
-
 		// Fix up CR's
 		if (notation.indexOf("I:linebreak $") != -1)
 		{
