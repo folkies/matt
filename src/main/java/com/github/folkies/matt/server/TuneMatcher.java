@@ -20,19 +20,15 @@ public class TuneMatcher {
 		PriorityBlockingQueue<MatchedTune> queue = new PriorityBlockingQueue<>();
 
 		corpus.getTunes().parallelStream().forEach(tune -> {
-			try {
-				int[][] d = new int[2][MAX_KEY_LENGTH + 1];
-				String normalized = tune.getNormalized();
-				if (normalized.length() > 1000) {
-					normalized = normalized.substring(0, 1000);
-				}
-
-				int ed = EditDistance.minEditDistance(query, normalized, d);
-				MatchedTune matchedTune = createMatchedTune(tune, ed, query.length());
-				queue.add(matchedTune);
-			} catch (Exception exc) {
-				exc.printStackTrace();
+			int[][] d = new int[2][MAX_KEY_LENGTH + 1];
+			String normalized = tune.getNormalized();
+			if (normalized.length() > 1000) {
+				normalized = normalized.substring(0, 1000);
 			}
+
+			int ed = EditDistance.minEditDistance(query, normalized, d);
+			MatchedTune matchedTune = createMatchedTune(tune, ed, query.length());
+			queue.add(matchedTune);
 		});
 
 		String tuneId = "";

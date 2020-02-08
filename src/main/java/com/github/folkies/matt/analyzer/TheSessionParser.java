@@ -14,8 +14,13 @@ import javax.json.JsonObject;
 import javax.json.JsonReader;
 import javax.json.JsonWriter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class TheSessionParser {
+
+	private static Logger log = LoggerFactory.getLogger(TheSessionParser.class);
 
 	public void parseTunes(InputStream is) throws IOException {
 		JsonArrayBuilder normalizedTunes = Json.createArrayBuilder();
@@ -29,7 +34,7 @@ public class TheSessionParser {
 			entry.updateFromNotation();
 			String body = CorpusEntryAnalyzer.analyzeEntry(entry);
 			if (!body.isEmpty()) {
-				System.out.println(String.format("%d\t%s", entry.getX(), body));
+				log.debug("{}\t{}", entry.getX(), body);
 				numPrinted++;
 				normalizedTunes.add(Json.createObjectBuilder()
 							.add("tune", tune.getString("tune"))
@@ -40,8 +45,8 @@ public class TheSessionParser {
 							.add("normalized", body));
 			}
 		}
-		System.out.println("Total  : " + tunes.size());
-		System.out.println("Printed: " + numPrinted);
+		log.info("Total  : {}", tunes.size());
+		log.info("Printed: {}", numPrinted);
 		OutputStream os = new FileOutputStream("target/classes/normalized-tunes.json");
 		JsonWriter writer = Json.createWriter(os);
 		writer.writeArray(normalizedTunes.build());
@@ -104,9 +109,7 @@ public class TheSessionParser {
 	}
 
 	public void parseTunesFromGitHub() throws IOException {
-		// master HEAD version is currently broken
 		URL url = new URL("https://raw.githubusercontent.com/adactio/TheSession-data/master/json/tunes.json");
-		// URL url = new URL("https://raw.githubusercontent.com/adactio/TheSession-data/12dbda23b26d63529a6097a4b68888aebb8eb0d0/json/tunes.json");
 		InputStream is = url.openStream();
 		parseTunes(is);
 	}
