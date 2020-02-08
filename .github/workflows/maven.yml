@@ -35,7 +35,7 @@ jobs:
     - name: Configure Google Cloud account
       run: |
         gcloud config set project tunebrowser
-        echo ${{ secrets.SERVICE_ACCOUNT_KEY }} > key.json
+        echo '${{ secrets.SERVICE_ACCOUNT_KEY }}' > key.json
         gcloud auth activate-service-account --key-file=key.json
         gcloud auth configure-docker
 
