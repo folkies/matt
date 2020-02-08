@@ -149,7 +149,7 @@ public class MattABCTools {
 	            }
 	            else
 	            {
-	                int newStart = retValue.lastIndexOf("|:", end);
+	                int newStart = retValue.lastIndexOf("|:", end - 2);
 	                if (newStart != -1)
 	                {
 	                    start = newStart + 2;
@@ -171,6 +171,9 @@ public class MattABCTools {
 	                    while ((numSpecialBars --) > 0)
 	                    {
 	                        secondTime = retValue.indexOf("|", secondTime + 2);
+	                    }
+	                    if (secondTime == -1) {
+	                    	secondTime = retValue.length();
 	                    }
 	                    expanded.append("|");
 	                    expanded.append(retValue.substring(start, normalPart));

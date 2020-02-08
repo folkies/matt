@@ -50,7 +50,7 @@ public class TheSessionParser {
 
 
 	private String toTuneBook(JsonObject tune) {
-		String settingId = tune.getString("setting");
+		String settingId = tune.getString("setting", null);
 		String title = tune.getString("name");
 		String rhythm = tune.getString("type");
 		String meter = tune.getString("meter");
@@ -104,7 +104,9 @@ public class TheSessionParser {
 	}
 
 	public void parseTunesFromGitHub() throws IOException {
+		// master HEAD version is currently broken
 		URL url = new URL("https://raw.githubusercontent.com/adactio/TheSession-data/master/json/tunes.json");
+		// URL url = new URL("https://raw.githubusercontent.com/adactio/TheSession-data/12dbda23b26d63529a6097a4b68888aebb8eb0d0/json/tunes.json");
 		InputStream is = url.openStream();
 		parseTunes(is);
 	}
