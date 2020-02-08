@@ -32,7 +32,15 @@ jobs:
       run: |
         mvn --batch-mode clean verify
 
+    - name: Configure Google Cloud account
+      run: |
+        gcloud config set project tunebrowser
+        echo ${{ secrets.SERVICE_ACCOUNT_KEY }} > key.json
+        gcloud auth activate-service-account --key-file=key.json
+        gcloud auth configure-docker
+
     - name: Build Docker image
       run: |
         docker build -f src/main/docker/Dockerfile.jvm -t eu.gcr.io/tunebrowser/matt .
+        docker push eu.gcr.io/tunebrowser/matt
         
