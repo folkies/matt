@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package com.github.folkies.matt;
+package com.github.folkies.matt.analyzer;
 
 import java.sql.ResultSet;
 import java.util.StringTokenizer;

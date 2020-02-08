@@ -1,6 +1,8 @@
-package com.github.folkies.matt;
+package com.github.folkies.matt.analyzer;
 
 import org.junit.Test;
+
+import com.github.folkies.matt.analyzer.MattABCTools;
 
 public class MattABCToolsTest {
 

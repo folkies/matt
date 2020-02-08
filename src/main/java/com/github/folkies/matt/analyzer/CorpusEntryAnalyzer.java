@@ -1,4 +1,4 @@
-package com.github.folkies.matt;
+package com.github.folkies.matt.analyzer;
 
 import java.sql.Connection;
 
