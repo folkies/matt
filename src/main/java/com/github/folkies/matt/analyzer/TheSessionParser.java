@@ -42,7 +42,7 @@ public class TheSessionParser {
 		}
 		System.out.println("Total  : " + tunes.size());
 		System.out.println("Printed: " + numPrinted);
-		OutputStream os = new FileOutputStream("index.json");
+		OutputStream os = new FileOutputStream("target/classes/normalized-tunes.json");
 		JsonWriter writer = Json.createWriter(os);
 		writer.writeArray(normalizedTunes.build());
 		writer.close();
