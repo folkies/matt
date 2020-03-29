@@ -136,9 +136,9 @@ public class MattABCTools {
 	        int count = 0;
 	        while (true)
 	        {
-	        	if (count > 10)
+	        	if (count > 30)
 	        	{
-	        		throw new ArrayIndexOutOfBoundsException("Too many parts in tune" + notes);
+	        		throw new ArrayIndexOutOfBoundsException("Too many parts in tune: " + notes);
 	        	}
 	        	count ++;
 	            end = retValue.indexOf(endToken);
@@ -185,9 +185,10 @@ public class MattABCTools {
 	                else
 	                {
 	                    StringBuffer expanded = new StringBuffer();
-	                    expanded.append(retValue.substring(start, end));
+	                    String part = stripTrailing(retValue.substring(start, end), ':');
+						expanded.append(part);
 	                    expanded.append("|");
-	                    expanded.append(retValue.substring(start, end));
+	                    expanded.append(part);
 	                    retValue.replace(start, end + 2, expanded.toString());
 	                    start = start + expanded.toString().length();
 	                }
@@ -196,14 +197,111 @@ public class MattABCTools {
     	}
     	catch (Exception e)
     	{
+    		System.out.println(notes);
     		e.printStackTrace();
     		retValue = new StringBuffer(notes);
     	}
         return retValue.toString();
     }
 
+    public static String expandRepeats(String notes) {
+    	StringBuilder expanded = new StringBuilder();
+    	int cursor = 0;
+    	int end = notes.indexOf(":|");
+    	while (end != -1) {
+            int start = notes.lastIndexOf("|:", end - 2);
+            if (cursor < start) {
+            	expanded.append(notes.substring(cursor, start));
+            	expanded.append("|");
+            	cursor = start + 2;
+            }
 
-    public static String stripBarDivisions(String notes)
+            if (start < cursor) {
+                start = cursor;
+            } else {
+            	start += 2;
+            }
+
+            int nextCursor = end + 2;
+            int secondVariant = indexOfSecondVariant(notes, nextCursor);
+
+			if (secondVariant == -1) {
+				String segment = stripTrailing(notes.substring(start, end), ':');
+				expanded.append(segment);
+				expanded.append("|");
+				expanded.append(segment);
+				expanded.append("|");
+				cursor = end + 2;
+			} else {
+				int firstVariant = indexOfFirstVariant(notes, cursor, end);
+				String commonSegment = notes.substring(start, firstVariant - 2);
+				expanded.append(commonSegment);
+				String firstEnding = notes.substring(firstVariant, end);
+				expanded.append("|");
+				expanded.append(firstEnding);
+				expanded.append("|");
+				expanded.append(commonSegment);
+				expanded.append("|");
+				cursor = secondVariant;
+			}
+            end = notes.indexOf(":|", cursor);
+
+    	}
+    	if (cursor < notes.length() - 1) {
+    		expanded.append(notes.substring(cursor));
+    	}
+    	return expanded.toString();
+    }
+
+
+    private static int indexOfFirstVariant(String notes, int from, int to) {
+        int index = notes.indexOf("|1", from);
+        if (index != -1 && index < to) {
+        	return index + 2;
+        }
+        index = notes.indexOf("[1", from);
+        if (index != -1 && index < to) {
+        	return index + 2;
+        }
+		return -1;
+	}
+
+	private static int indexOfSecondVariant(String notes, int from) {
+		int pos = from;
+		while (pos < notes.length()) {
+			if (Character.isWhitespace(notes.charAt(pos))) {
+				pos++;
+			} else {
+				break;
+			}
+		}
+		if (pos == notes.length()) {
+			return -1;
+		}
+		if (notes.charAt(pos) == '[') {
+			pos++;
+		}
+		if (pos == notes.length()) {
+			return -1;
+		}
+		if (Character.isDigit(notes.charAt(pos))) {
+			return pos + 1;
+		}
+		return -1;
+	}
+
+	private static String stripTrailing(String notes, char c) {
+    	int pos = notes.length() -1;
+    	while (pos >= 0) {
+    		if (notes.charAt(pos) != c) {
+    			break;
+    		}
+    		pos--;
+    	}
+		return notes.substring(0, pos + 1);
+	}
+
+	public static String stripBarDivisions(String notes)
     {
         StringBuffer retValue = new StringBuffer();
 
@@ -444,5 +542,4 @@ public class MattABCTools {
 		}
 		return title;
 	}
-
 }
