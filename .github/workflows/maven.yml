@@ -44,3 +44,5 @@ jobs:
         docker build -f src/main/docker/Dockerfile.jvm -t eu.gcr.io/tunebrowser/matt .
         docker push eu.gcr.io/tunebrowser/matt
         
+
+        
