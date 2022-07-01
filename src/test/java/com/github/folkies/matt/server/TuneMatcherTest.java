@@ -6,10 +6,6 @@ import javax.inject.Inject;
 
 import org.junit.jupiter.api.Test;
 
-import com.github.folkies.matt.server.Corpus;
-import com.github.folkies.matt.server.MatchedTune;
-import com.github.folkies.matt.server.TuneMatcher;
-
 import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
@@ -55,6 +51,4 @@ public class TuneMatcherTest {
 			System.out.println(tune.getNormalized());
 		}
 	}
-
-
 }
